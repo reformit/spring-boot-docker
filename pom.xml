@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>guru.springframework</groupId>
 	<artifactId>spring-boot-docker</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>spring-boot-docker</name>
 	<description>Spring Framework Guru Docker Course</description>
 
+	<!-- <parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId> 
+		<version>1.5.1.RELEASE</version> <relativePath /> lookup parent from repository 
+		</parent> -->
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.4.4</version>
+		<relativePath />
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
+		<!-- <java.version>1.8</java.version> -->
+		<java.version>11</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
 
-		<!--set this to your docker acct name-->
-		<docker.image.prefix>springframeworkguru</docker.image.prefix>
+		<!--set this to your docker acct name -->
+		<docker.image.prefix>reformit</docker.image.prefix>
 
-		<!--Set to name of project-->
+		<!--Set to name of project -->
 		<docker.image.name>springbootdocker</docker.image.name>
+
+		<docker.startParallel>true</docker.startParallel>
 
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>guru.springframework</groupId>
+			<artifactId>page-view-client</artifactId>
+			<version>0.0.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -45,14 +60,14 @@
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 
-		<!--testing deps-->
+		<!--testing deps -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -65,18 +80,18 @@
 				<version>0.20.0</version>
 
 				<configuration>
+					<buildArgs>
+						<RELEASE_VERSION>${project.version}</RELEASE_VERSION>
+					</buildArgs>
 
-                    <!--<dockerHost>http://127.0.0.1:2375</dockerHost>-->
-                    <dockerHost>unix:///var/run/docker.sock</dockerHost>
-
-                    <verbose>true</verbose>
+					<verbose>true</verbose>
 					<images>
 						<image>
 							<name>${docker.image.prefix}/${docker.image.name}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
 
-                                <!--copies artficact to docker build dir in target-->
+								<!--copies artficact to docker build dir in target -->
 								<assembly>
 									<descriptorRef>artifact</descriptorRef>
 								</assembly>
@@ -85,12 +100,17 @@
 									<tag>${project.version}</tag>
 								</tags>
 							</build>
+							<run>
+								<ports>
+									<port>8080:8080</port>
+								</ports>
+							</run>
 						</image>
 					</images>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
+
 
 </project>

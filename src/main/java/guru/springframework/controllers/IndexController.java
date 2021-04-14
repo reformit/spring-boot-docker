@@ -21,7 +21,7 @@ public class IndexController {
 
     @RequestMapping({"/", "index"})
     public String getIndex(Model model){
-
+    	System.out.println("ANOTHER TEST");
         model.addAttribute("products", productService.listProducts());
 
         return "index";
