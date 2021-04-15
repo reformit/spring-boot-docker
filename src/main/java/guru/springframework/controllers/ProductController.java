@@ -44,6 +44,8 @@ public class ProductController {
 
         log.info("Sending Message to pagie view service");
         pageViewService.sendPageViewEvent(pageViewEvent);
+        
+        System.out.println("GOT HERE");
 
         return "product";
     }

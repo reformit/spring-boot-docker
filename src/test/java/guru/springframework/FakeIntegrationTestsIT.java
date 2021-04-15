@@ -1,6 +1,8 @@
 package guru.springframework;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by jt on 3/23/17.
@@ -130,6 +132,31 @@ public class FakeIntegrationTestsIT {
         Thread.sleep(100);
 
         System.out.println("Test 5 . . . . .");
+    }
+    
+    @Test
+    public void someFakeTestSix() throws Exception {
+    	System.out.println("Test 6 .");
+    	
+    	Thread.sleep(100);
+    	
+    	System.out.println("Test 6 . .");
+    	
+    	Thread.sleep(100);
+    	
+    	System.out.println("Test 6 . .");
+    	
+    	Thread.sleep(100);
+    	
+    	System.out.println("Test 6 . . .");
+    	
+    	Thread.sleep(100);
+    	
+    	System.out.println("Test 6 . . . .");
+    	
+    	Thread.sleep(100);
+    	
+    	System.out.println("Test 6 . . . . .");
     }
     
 }
