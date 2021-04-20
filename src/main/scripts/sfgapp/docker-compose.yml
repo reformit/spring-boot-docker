@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mysqldb:
-    image: mysql
+    image: mysql:5.7
     restart: always
     ports:
       - '3306:3306'
@@ -24,6 +24,7 @@ services:
     ports:
       - "8081:8081"
     restart: always
+    
     depends_on:
       - mysqldb
       - rabbitmq
@@ -31,14 +32,15 @@ services:
       SPRING_DATASOURCE_URL: 'jdbc:mysql://mysqldb:3306/pageviewservice'
       SPRING_PROFILES_ACTIVE: 'mysql'
       SPRING_RABBITMQ_HOST: rabbitmq
+      
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
-      interval: 30s
+      interval: 10s
       timeout: 10s
-      retries: 3
+      retries: 10
 
   springbootdocker:
-    image: springframeworkguru/springbootdocker
+    image: knox:5000/reformit/springbootdocker
     ports:
       - "8080:8080"
     restart: always
@@ -48,7 +50,7 @@ services:
     environment:
       SPRING_RABBITMQ_HOST: rabbitmq
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
       timeout: 10s
-      retries: 3
+      retries: 10
